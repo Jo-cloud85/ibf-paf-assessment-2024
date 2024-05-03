@@ -50,9 +50,7 @@
                 </thead>
                 <tbody>
                     <tr data-th-each="beer: ${brewery.beers}" >
-                        <!-- <td>
-                            <input type="number" data-th-text="${beer.beerId}" data-th-field="*{beerId}" hidden></input>
-                        </td> -->
+                        <input type="number" class="form-control" name="beerId" data-th-value="${beer.beerId}" hidden></input>
                         <td data-th-text="${beer.beerName}"></td>
                         <td data-th-text="${beer.beerDescription}"></td>
                         <td>

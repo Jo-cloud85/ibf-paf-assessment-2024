@@ -94,7 +94,6 @@ public class BeerController {
 			List<Beer> beerList = brewery.getBeers();
 			mav.addObject("brewery", getBeersFromBrewery.get());
 
-			// BeerOrder beerOrder = new BeerOrder();
 			BeerOrderDetail beerOrderDetail = new BeerOrderDetail();
 
 			mav.addObject("orderdetail", beerOrderDetail);
@@ -117,13 +116,12 @@ public class BeerController {
 	//TODO Task 5 - view 2, place order
 	@PostMapping(path="/brewery/{breweryId}/order")
 	public ModelAndView postOrder(
-		// @ModelAttribute Beer beer,
-		// @ModelAttribute Brewery brewery,
+		@ModelAttribute BeerOrderDetail beerOrderDetailform,
 		@PathVariable("breweryId") int breweryId,
 		@RequestBody MultiValueMap<String,String> payload) {
 		// System.out.println(beer);
 		System.out.println(payload);
-		System.out.println(breweryId);
+		System.out.println(beerOrderDetailform);
 
 		try {
 			ModelAndView mav = new ModelAndView();
@@ -131,10 +129,18 @@ public class BeerController {
 			String orderId = UUID.randomUUID().toString().substring(0, 8);
 			Date orderDate = new Date();
 			List<BeerOrderDetail> beerOrderDetails = new LinkedList<>();
-
-			List<String> quantityList = payload.get("quantity");
-
 			BeerOrder beerOrder = new BeerOrder();
+			
+			List<String> quantityList = payload.get("quantity");
+			for (String i : quantityList) {
+				int intI = Integer.parseInt(i);
+				if (intI != 0) {
+					BeerOrderDetail beerOrderDetail = new BeerOrderDetail();
+					beerOrderDetail.setQuantity(intI);
+					beerOrderDetails.add(beerOrderDetail);
+				}
+			}
+
 			beerOrder.setOrderId(orderId);
 			beerOrder.setDate(orderDate);
 			beerOrder.setBreweryId(breweryId);
